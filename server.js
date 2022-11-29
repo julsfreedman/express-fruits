@@ -8,11 +8,11 @@ const methodOverride = require('method-override');
 const fruitsController = require("./controllers/fruitController")
 
 // ===== Connection to Database =====
-mongoose.connect(process.env.MONGO_URI,{
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-mongoose.connection.once("open",() => {
+mongoose.connection.once("open", () => {
   console.log("connected to mongo")
 })
 
@@ -21,18 +21,21 @@ app.set("view engine", "jsx")
 app.engine("jsx", reactViews.createEngine())
 
 // ===== Middleware =====
+
 app.use((req, res, next) => {
   console.log("Im running for all routes")
   console.log("1. middleware")
   next()
 })
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({ extended: false }))
 app.use(methodOverride("_method"))
+
+app.use(express.static('public')); //tells express to try to match requests with files in the directory called 'public' // javascript
 
 // ===== Routes =====
 app.use("/fruits", fruitsController)
 
 
-app.listen(PORT, () => { 
+app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`)
 });
